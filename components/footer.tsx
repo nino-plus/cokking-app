@@ -8,9 +8,9 @@ export default function Footer() {
         <Button variant="ghost" asChild className="mb-4">
           <Link href="/">LOGO</Link>
         </Button>
-        <div className="w-full flex justify-between items-center">
+        <div className="w-full flex md:flex-row flex-col items-center md:justify-between">
           <nav>
-            <ul className="flex space-x-2">
+            <ul className="flex flex-wrap">
               <li>
                 <Button variant="ghost" asChild>
                   <Link href="/ingredients">食材入力</Link>
@@ -33,7 +33,7 @@ export default function Footer() {
               </li>
             </ul>
           </nav>
-          <p>&copy; KAYKOGU</p>
+          <p className="md:mt-0 mt-4">&copy; KAYKOGU</p>
         </div>
       </div>
     </footer>
