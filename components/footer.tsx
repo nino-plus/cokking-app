@@ -13,22 +13,22 @@ export default function Footer() {
             <ul className="flex space-x-2">
               <li>
                 <Button variant="ghost" asChild>
-                  <Link href="/guide">食材入力</Link>
+                  <Link href="/ingredients">食材入力</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="ghost" asChild>
-                  <Link href="/privacy">レシピ結果</Link>
+                  <Link href="/results">レシピ結果</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="ghost" asChild>
-                  <Link href="/contact">履歴</Link>
+                  <Link href="/history">履歴</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="ghost" asChild>
-                  <Link href="/about">利用規約</Link>
+                  <Link href="/guide">利用規約</Link>
                 </Button>
               </li>
             </ul>
