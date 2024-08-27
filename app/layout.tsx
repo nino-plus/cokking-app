@@ -23,7 +23,6 @@ export default function RootLayout({
         className={cn(inter.className, 'min-h-dvh')}
         suppressHydrationWarning
       >
-        {' '}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -31,8 +30,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Footer />
         </ThemeProvider>
-        <Footer />
       </body>
     </html>
   );
