@@ -1,12 +1,9 @@
-'use client';
+import BackButton from '@/components/ui/back-button';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
-  const router = useRouter();
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-white dark:bg-zinc-900">
       <div className="w-[350px] text-center bg-white dark:bg-zinc-800 shadow-xl dark:shadow-2xl rounded-lg p-8  dark:border dark:border-zinc-700">
@@ -39,13 +36,14 @@ export default function NotFound() {
           >
             <Link href="/">ホームに戻る</Link>
           </Button>
+          <BackButton>
           <Button
             variant="outline"
-            onClick={() => router.back()}
             className="dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-700"
           >
             前のページへ
           </Button>
+          </BackButton>
         </div>
       </div>
     </div>
