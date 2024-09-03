@@ -1,28 +1,13 @@
-'use client'
-
+import Animated404 from '@/components/animated-404';
 import BackButton from '@/components/ui/back-button';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white dark:bg-zinc-900">
       <div className="w-[350px] text-center bg-white dark:bg-zinc-800 shadow-xl dark:shadow-2xl rounded-lg p-8  dark:border dark:border-zinc-700">
-        <motion.div
-          className="mb-6"
-          initial={{ scale: 0 }}
-          animate={{ rotate: 360, scale: 1 }}
-          transition={{
-            type: 'spring',
-            stiffness: 260,
-            damping: 20,
-          }}
-        >
-          <h1 className="text-6xl font-bold text-zinc-700 dark:text-zinc-200">
-            404
-          </h1>
-        </motion.div>
+        <Animated404 />
         <div className="mb-6">
           <p className="text-xl mb-4 text-zinc-700 dark:text-zinc-300">
             ページが見つかりません
