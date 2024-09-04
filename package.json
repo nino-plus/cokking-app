@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "supabase:generate-types": "bunx supabase gen types typescript --local --schema public > types/database.ts",
+    "supabase:generate-migration": "bunx supabase db diff | bunx supabase migration new",
+    "supabase:generate-seed": "bunx supabase db dump --data-only -f supabase/seed.sql"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
@@ -15,6 +18,8 @@
     "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.3",
     "@tailwindcss/typography": "^0.5.14",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
