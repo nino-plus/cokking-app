@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface CookCardProps {
   id: string;
@@ -19,6 +20,8 @@ export default function CookCard({
   isSelected,
   onClick,
 }: CookCardProps) {
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+
   return (
     <Card
       className={cn(
@@ -33,6 +36,7 @@ export default function CookCard({
             src={image}
             alt={name}
             fill
+            // onLoad={}
             className="rounded-t-lg object-contain"
           />
         </div>

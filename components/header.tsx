@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { ModeToggle } from './mode-toggle';
-import UserMenu from './user-menu';
 import { Menu } from 'lucide-react';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import UserMenu from './user-menu';
 
 const navItems = [
   {
