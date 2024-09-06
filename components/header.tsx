@@ -4,6 +4,7 @@ import { ModeToggle } from './mode-toggle';
 import { Menu } from 'lucide-react';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import UserMenu from './user-menu';
+import { currentUser } from '@/data/auth';
 
 const navItems = [
   {
@@ -20,7 +21,9 @@ const navItems = [
   },
 ];
 
-export default function Header() {
+export default async function Header() {
+  const user = await currentUser();
+
   return (
     <header className="h-16 flex items-center container mx-auto border-b px-6">
       <Button variant="ghost" asChild>
@@ -40,7 +43,7 @@ export default function Header() {
           </ul>
         </nav>
         <ModeToggle />
-        <UserMenu />
+        <UserMenu user={user} />
       </div>
       <div className="md:hidden">
         <Sheet>
@@ -59,7 +62,7 @@ export default function Header() {
               ))}
             </nav>
             <div className="flex gap-4 mt-4 justify-center">
-              <UserMenu />
+              <UserMenu user={user} />
               <ModeToggle />
             </div>
           </SheetContent>

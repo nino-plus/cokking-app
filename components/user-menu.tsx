@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,47 +13,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User as UserIcon, CreditCard, Settings, LogOut } from 'lucide-react';
-import { User } from '@/types/user';
 import { signInWithGoogle, signOut } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
 
-export default function UserMenu() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const supabase = createClient();
-  const router = useRouter();
+interface UserMenuProps {
+  user: User | null;
+}
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        setUser(user as User | null);
-      } catch (error) {
-        console.error('データを取得することができませんでした:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    getUser();
-  }, []);
+export default function UserMenu({ user }: UserMenuProps) {
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
       await signOut();
-      setUser(null);
       router.refresh();
     } catch (error) {
       console.error('ログアウトに失敗しました:', error);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="size-10 bg-zinc-300 animate-pulse rounded-full"></div>
-    );
-  }
 
   if (!user) {
     return (
@@ -75,12 +51,15 @@ export default function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
           <Avatar>
-            <AvatarImage src={avatarUrl} alt={user.email} />
+            <AvatarImage src={avatarUrl} alt={user.email || ''} />
+            <AvatarFallback>
+              {user.email ? user.email[0].toUpperCase() : 'U'}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent sideOffset={8} align="end" className="w-56">
-        <DropdownMenuLabel>マイアカウント</DropdownMenuLabel>
+        <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
@@ -97,7 +76,7 @@ export default function UserMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onSelect={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>ログアウト</span>
         </DropdownMenuItem>
