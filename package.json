@@ -9,7 +9,9 @@
     "lint": "next lint",
     "supabase:generate-types": "bunx supabase gen types typescript --local --schema public > types/database.ts",
     "supabase:generate-migration": "bunx supabase db diff | bunx supabase migration new",
-    "supabase:generate-seed": "bunx supabase db dump --data-only -f supabase/seed.sql"
+    "supabase:generate-seed": "bunx supabase db dump --data-only -f supabase/seed.sql",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -38,12 +40,23 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.9.0",
+    "@storybook/addon-essentials": "^8.2.9",
+    "@storybook/addon-interactions": "^8.2.9",
+    "@storybook/addon-links": "^8.2.9",
+    "@storybook/addon-onboarding": "^8.2.9",
+    "@storybook/blocks": "^8.2.9",
+    "@storybook/nextjs": "^8.2.9",
+    "@storybook/react": "^8.2.9",
+    "@storybook/test": "^8.2.9",
     "@types/node": "20.16.2",
     "@types/react": "18.3.4",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
+    "eslint-plugin-storybook": "^0.8.0",
     "postcss": "^8",
+    "storybook": "^8.2.9",
     "tailwindcss": "^3.4.1",
     "typescript": "5.5.4"
   }

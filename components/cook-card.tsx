@@ -31,7 +31,7 @@ export default function CookCard({
       onClick={() => onClick(id)}
     >
       <CardHeader className="p-2">
-        <div className="relative aspect-square">
+        <div className="relative aspect-video">
           <Image
             src={image}
             alt={name}
