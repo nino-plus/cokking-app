@@ -4,12 +4,9 @@ import CookCard from './cook-card';
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { X } from 'lucide-react';
-
-interface Ingredient {
-  id: string;
-  name: string;
-  category: string;
-}
+import { Ingredient } from '@/types/recipes';
+import { useRouter } from 'next/navigation';
+import { generateRecipe } from '@/actions/recipe';
 
 const categories = [
   {
@@ -106,32 +103,52 @@ export default function CookTabs() {
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(
     []
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  // 食材がクリックされたときの処理
   const handleIngredientClick = (
     id: string,
     name: string,
     category: string
   ) => {
     setSelectedIngredients((prev: Ingredient[]) =>
-      // 選択済み食材の中に選択した食材はあるかチェック（someメソッド）
       prev.some((item) => item.id === id)
-        ? // ある場合はこの食材を除外した新しい配列を作成（filterメソッド）
-          prev.filter((item) => item.id !== id)
-        : // 現在の配列に新しい食材を追加（スプレッド構文,配列リテラル記法）
-          [...prev, { id, name, category }]
+        ? prev.filter((item) => item.id !== id)
+        : [...prev, { id, name, category }]
     );
   };
 
-  // 選択された食材をカテゴリーごとに分類し、各カテゴリーに関連する選択済み食材のリストを作成
   const getSelectedIngredientsByCategory = () => {
     return categories.map((category) => ({
       ...category,
       selectedItems: selectedIngredients.filter(
-        // 選択済み食材の中にカテゴリーごとに含まれる食材はあるかチェック（someメソッド）
         (item: Ingredient) => item.category === category.name
       ),
     }));
+  };
+
+  const handleRecipeGeneration = async () => {
+    if (selectedIngredients.length === 0) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await generateRecipe(selectedIngredients);
+      if (result.recipeId) {
+        router.push(`/results/${result.recipeId}`);
+      } else {
+        throw new Error('レシピの生成に失敗しました');
+      }
+    } catch (error) {
+      console.error('レシピ生成中にエラーが発生しました:', error);
+      setError(
+        'レシピの生成中にエラーが発生しました。もう一度お試しください。'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -215,8 +232,11 @@ export default function CookTabs() {
           </p>
         )}
         <div className="mt-6 text-center">
-          <Button disabled={selectedIngredients.length === 0}>
-            レシピを提案する
+          <Button
+            disabled={selectedIngredients.length === 0 || isLoading}
+            onClick={handleRecipeGeneration}
+          >
+            {isLoading ? 'レシピを生成中...' : 'レシピを提案する'}
           </Button>
         </div>
       </div>
