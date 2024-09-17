@@ -7,10 +7,6 @@ const navItems = [
     href: '/ingredients',
   },
   {
-    label: 'レシピ結果',
-    href: '/results',
-  },
-  {
     label: '履歴',
     href: '/history',
   },

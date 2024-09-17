@@ -5,6 +5,7 @@ export type Ingredient = {
 };
 
 export type Recipe = {
+  id: number;
   name: string;
   cookingTime: number;
   difficulty: string;

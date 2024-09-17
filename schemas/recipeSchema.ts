@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const recipeSchema = z.object({
   recipe: z.object({
+    id: z.number().optional(),
     name: z.string().describe("レシピの名前"),
     ingredients: z.array(z.object({
       name: z.string().describe("材料の名前（主材料や調味料を含む）"),

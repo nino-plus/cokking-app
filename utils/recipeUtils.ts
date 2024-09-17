@@ -68,6 +68,7 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
   if (!data) return null;
 
   return {
+    id: data.id,
     name: data.name,
     cookingTime: new Date(data.cookingTime).getMinutes(),
     difficulty: data.difficulty,
@@ -75,4 +76,48 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
     steps: JSON.parse(data.steps),
     source: data.source,
   };
+}
+
+export async function getUserRecipes(
+  userId: string,
+  page: number,
+  pageSize: number,
+): Promise<{ recipes: Recipe[]; count: number }> {
+  const supabase = createClient();
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize - 1;
+
+  try {
+    const { data, error, count } = await supabase
+      .from("recipes")
+      .select("*", { count: "exact" })
+      .eq("userId", userId)
+      .range(start, end)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Supabaseクエリエラー:", error);
+      throw new Error(`Supabaseクエリエラー: ${error.message}`);
+    }
+
+    if (!data) {
+      console.error("データが返されませんでした");
+      throw new Error("データが返されませんでした");
+    }
+
+    const recipes: Recipe[] = data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      cookingTime: new Date(item.cookingTime).getMinutes(),
+      difficulty: item.difficulty,
+      servings: item.servings,
+      steps: Array.isArray(item.steps) ? item.steps : JSON.parse(item.steps),
+      source: item.source,
+    }));
+
+    return { recipes, count: count || 0 };
+  } catch (error) {
+    console.error("getUserRecipes error:", error);
+    throw error;
+  }
 }
