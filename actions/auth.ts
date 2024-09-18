@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 const host = process.env.NODE_ENV === "production"
-  ? "https://example.com" // TODO:本番環境の URL
+  ? "https://cooking-app-coral.vercel.app" // TODO:本番環境の URL
   : "http://localhost:3000";
 
 export const signInWithGithub = async () => {
