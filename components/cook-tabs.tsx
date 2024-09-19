@@ -1,7 +1,7 @@
 'use client';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CookCard from './cook-card';
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import { Button } from './ui/button';
 import { X } from 'lucide-react';
 import { Ingredient } from '@/types/recipes';
@@ -105,6 +105,7 @@ export default function CookTabs() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('vegetable');
   const router = useRouter();
 
   const handleIngredientClick = (
@@ -117,6 +118,18 @@ export default function CookTabs() {
         ? prev.filter((item) => item.id !== id)
         : [...prev, { id, name, category }]
     );
+  };
+
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    id: string,
+    name: string,
+    category: string
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleIngredientClick(id, name, category);
+    }
   };
 
   const getSelectedIngredientsByCategory = () => {
@@ -166,7 +179,7 @@ export default function CookTabs() {
 
   return (
     <div className="container mx-auto px-6">
-      <Tabs defaultValue="vegetable" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-4 md:mb-8">
           {categories.map((category) => (
             <TabsTrigger key={category.value} value={category.value}>
@@ -174,12 +187,41 @@ export default function CookTabs() {
             </TabsTrigger>
           ))}
         </TabsList>
-        {categories.map((category) => (
-          <TabsContent value={category.value} key={category.value}>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {category.items.map((item) => (
+      </Tabs>
+
+      <div
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        role="grid"
+      >
+        {categories
+          .find((category) => category.value === activeTab)
+          ?.items.map((item) => (
+            <div key={item.id} role="gridcell">
+              <button
+                className="w-full h-full focus:outline-none focus:ring-2 focus:ring-black rounded-md"
+                onClick={() =>
+                  handleIngredientClick(
+                    item.id,
+                    item.name,
+                    categories.find((cat) => cat.value === activeTab)?.name ||
+                      ''
+                  )
+                }
+                onKeyDown={(e) =>
+                  handleKeyDown(
+                    e,
+                    item.id,
+                    item.name,
+                    categories.find((cat) => cat.value === activeTab)?.name ||
+                      ''
+                  )
+                }
+                tabIndex={0}
+                aria-pressed={selectedIngredients.some(
+                  (selected: Ingredient) => selected.id === item.id
+                )}
+              >
                 <CookCard
-                  key={item.id}
                   id={item.id}
                   name={item.name}
                   image={item.image}
@@ -187,14 +229,18 @@ export default function CookTabs() {
                     (selected: Ingredient) => selected.id === item.id
                   )}
                   onClick={() =>
-                    handleIngredientClick(item.id, item.name, category.name)
+                    handleIngredientClick(
+                      item.id,
+                      item.name,
+                      categories.find((cat) => cat.value === activeTab)?.name ||
+                        ''
+                    )
                   }
                 />
-              ))}
+              </button>
             </div>
-          </TabsContent>
-        ))}
-      </Tabs>
+          ))}
+      </div>
 
       {/* 選択された食材の表示 */}
       <div className="mt-8 p-6 bg-white rounded-xl shadow-lg">
