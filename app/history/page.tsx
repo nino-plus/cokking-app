@@ -3,9 +3,15 @@ import { redirect } from 'next/navigation';
 import { getUserRecipes } from '@/utils/recipeUtils';
 import RecipeList from './_components/RecipeList';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata: Metadata = {
+  title: 'レシピ履歴',
+  description:
+    'AIでレシピを提案するクッキングアプリです。お手軽にレシピを提案します。',
+};
 export default async function Page({
   searchParams,
 }: {

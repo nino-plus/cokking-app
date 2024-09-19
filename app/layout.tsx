@@ -9,7 +9,10 @@ import { cn } from '@/lib/utils';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'AIでレシピ提案|クッキングアプリ',
+  title: {
+    template: '%s | クッキングアプリ',
+    default: 'クッキングアプリ',
+  },
   description:
     'AIでレシピを提案するクッキングアプリです。お手軽にレシピを提案します。',
   openGraph: {
