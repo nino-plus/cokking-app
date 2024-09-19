@@ -44,7 +44,6 @@ export default function RecipeForm() {
     setError(null);
 
     try {
-      // Ingredient 型に変換
       const ingredientObjects: Ingredient[] = ingredients.map(
         (name, index) => ({
           id: `${index}`,
@@ -103,9 +102,13 @@ export default function RecipeForm() {
                   tabIndex={0}
                   onClick={() => removeIngredient(ingredient)}
                   variant="secondary"
-                  className="text-sm py-1 px-2 cursor-pointer"
+                  className="text-sm py-1 px-2 cursor-pointer max-w-full"
                 >
-                  {ingredient}
+                  <span className="truncate" title={ingredient}>
+                    {ingredient.length > 20
+                      ? `${ingredient.slice(0, 17)}...`
+                      : ingredient}
+                  </span>
                   <span className="ml-2 text-red-500 hover:text-red-700 transition-colors duration-200">
                     <X size={14} />
                     <span className="sr-only">Remove</span>
