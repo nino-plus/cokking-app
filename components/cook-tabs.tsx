@@ -134,9 +134,20 @@ export default function CookTabs() {
     setIsLoading(true);
     setError(null);
 
+    const timeoutDuration = 10000;
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(
+        () => reject(new Error('タイムアウトしました')),
+        timeoutDuration
+      )
+    );
+
     try {
-      const result = await generateRecipe(selectedIngredients);
-      if (result.recipeId) {
+      const result = await Promise.race([
+        generateRecipe(selectedIngredients),
+        timeoutPromise,
+      ]);
+      if (result && typeof result === 'object' && 'recipeId' in result) {
         router.push(`/results/${result.recipeId}`);
       } else {
         throw new Error('レシピの生成に失敗しました');
@@ -144,7 +155,9 @@ export default function CookTabs() {
     } catch (error) {
       console.error('レシピ生成中にエラーが発生しました:', error);
       setError(
-        'レシピの生成中にエラーが発生しました。もう一度お試しください。'
+        error instanceof Error && error.message === 'タイムアウトしました'
+          ? 'レシピの生成に時間がかかっています。もう一度お試しください。'
+          : 'レシピの生成中にエラーが発生しました。もう一度お試しください。'
       );
     } finally {
       setIsLoading(false);
