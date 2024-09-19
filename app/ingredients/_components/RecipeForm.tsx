@@ -104,10 +104,8 @@ export default function RecipeForm() {
                   variant="secondary"
                   className="text-sm py-1 px-2 cursor-pointer max-w-full"
                 >
-                  <span className="truncate" title={ingredient}>
-                    {ingredient.length > 20
-                      ? `${ingredient.slice(0, 17)}...`
-                      : ingredient}
+                  <span className="truncate max-w-20" title={ingredient}>
+                    {ingredient}
                   </span>
                   <span className="ml-2 text-red-500 hover:text-red-700 transition-colors duration-200">
                     <X size={14} />
